@@ -29,7 +29,7 @@ namespace Apuestas
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(ConfiguracionCookie);
 
             services.AddControllersWithViews();
-            services.AddDbContext<ApuestasDbBrowser>(options => options.UseSqlite(@"filename=C:\Users\ferdi\OneDrive\Escritorio\Apuestas.db"));
+            services.AddDbContext<ApuestasDbContext>(options => options.UseSqlite(@"filename=C:\Users\ferdi\OneDrive\Escritorio\Apuestas.db"));
 
         }
 

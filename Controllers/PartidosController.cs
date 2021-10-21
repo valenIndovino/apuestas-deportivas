@@ -10,22 +10,22 @@ using Apuestas.Models;
 
 namespace Apuestas.Controllers
 {
-    public class JugadoresController : Controller
+    public class PartidosController : Controller
     {
         private readonly ApuestasDbContext _context;
 
-        public JugadoresController(ApuestasDbContext context)
+        public PartidosController(ApuestasDbContext context)
         {
             _context = context;
         }
 
-        // GET: Jugadores
+        // GET: Partidos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Jugadores.ToListAsync());
+            return View(await _context.Partidos.ToListAsync());
         }
 
-        // GET: Jugadores/Details/5
+        // GET: Partidos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,53 +33,39 @@ namespace Apuestas.Controllers
                 return NotFound();
             }
 
-            var jugador = await _context.Jugadores
+            var partido = await _context.Partidos
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (jugador == null)
+            if (partido == null)
             {
                 return NotFound();
             }
 
-            return View(jugador);
+            return View(partido);
         }
 
-        // GET: Jugadores/Create
+        // GET: Partidos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Jugadores/Create
+        // POST: Partidos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Jugador jugador)
+        public async Task<IActionResult> Create([Bind("Id,NombreLocal,NombreVisitante,Fecha")] Partido partido)
         {
             if (ModelState.IsValid)
             {
-                // 1 obtener todos los jugadores
-                //var listaJugadores = _context.Jugadores.ToList();
-                //2 por cada usuario, ver si se repite el usuario contra el usuario recibido
-                //var noSeRepite = !listaJugadores.Any(jug => jug.Usuario.Equals(jugador.Usuario);
-
-                if (this.ValidarRepeticion(jugador))
-                {
-                    _context.Add(jugador);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ViewBag.Error = "Email Repetido";
-                    return View(jugador);
-                }
-
+                _context.Add(partido);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            return View(jugador);
+            return View(partido);
         }
 
-        // GET: Jugadores/Edit/5
+        // GET: Partidos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,22 +73,22 @@ namespace Apuestas.Controllers
                 return NotFound();
             }
 
-            var jugador = await _context.Jugadores.FindAsync(id);
-            if (jugador == null)
+            var partido = await _context.Partidos.FindAsync(id);
+            if (partido == null)
             {
                 return NotFound();
             }
-            return View(jugador);
+            return View(partido);
         }
 
-        // POST: Jugadores/Edit/5
+        // POST: Partidos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Usuario,Edad,Mail,Password, Saldo")] Jugador jugador)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreLocal,NombreVisitante,Fecha,GolesLocal,GolesVisitante")] Partido partido)
         {
-            if (id != jugador.Id)
+            if (id != partido.Id)
             {
                 return NotFound();
             }
@@ -111,12 +97,12 @@ namespace Apuestas.Controllers
             {
                 try
                 {
-                    _context.Update(jugador);
+                    _context.Update(partido);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!JugadorExists(jugador.Id))
+                    if (!PartidoExists(partido.Id))
                     {
                         return NotFound();
                     }
@@ -127,25 +113,10 @@ namespace Apuestas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(jugador);
-        }
-        private bool ValidarRepeticion(Jugador jugador)
-        {
-            List<Jugador> listaUsuarios = _context.Jugadores.ToList<Jugador>();
-            listaUsuarios = _context.Jugadores.ToList<Jugador>();
-            //2. Por cada usuario, ver si el email se repite contra el email recibido(usuario)
-            var noSeRepite = !listaUsuarios
-                .Where(a => a.Mail != null)
-                .Any(usu => usu.Mail.Equals(jugador.Mail, StringComparison.OrdinalIgnoreCase) &&
-                usu.Id != jugador.Id);
-
-            return noSeRepite;
+            return View(partido);
         }
 
-
-
-
-        // GET: Jugadores/Delete/5
+        // GET: Partidos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,30 +124,30 @@ namespace Apuestas.Controllers
                 return NotFound();
             }
 
-            var jugador = await _context.Jugadores
+            var partido = await _context.Partidos
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (jugador == null)
+            if (partido == null)
             {
                 return NotFound();
             }
 
-            return View(jugador);
+            return View(partido);
         }
 
-        // POST: Jugadores/Delete/5
+        // POST: Partidos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var jugador = await _context.Jugadores.FindAsync(id);
-            _context.Jugadores.Remove(jugador);
+            var partido = await _context.Partidos.FindAsync(id);
+            _context.Partidos.Remove(partido);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool JugadorExists(int id)
+        private bool PartidoExists(int id)
         {
-            return _context.Jugadores.Any(e => e.Id == id);
+            return _context.Partidos.Any(e => e.Id == id);
         }
     }
 }

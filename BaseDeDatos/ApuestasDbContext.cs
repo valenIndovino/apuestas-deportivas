@@ -7,16 +7,18 @@ using System.Threading.Tasks;
 
 namespace Apuestas.BaseDeDatos
 {
-    public class ApuestasDbBrowser : DbContext
+    public class ApuestasDbContext : DbContext
     {
-        public ApuestasDbBrowser(DbContextOptions opciones) : base(opciones)
+        public ApuestasDbContext(DbContextOptions opciones) : base(opciones)
         {
 
         }
         public DbSet<Jugador> Jugadores { get; set; }
 
-        //public DbSet<Equipo> Equipos { get; set; }
+        public DbSet<Equipo> Equipos { get; set; }
 
+        public DbSet<Partido> Partidos { get; set; }
+        public object Partido { get; internal set; }
     }
 
 }

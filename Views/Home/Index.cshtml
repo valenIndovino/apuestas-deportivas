@@ -1,14 +1,59 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Apuestas.Models.Partido>
+
+@{
+    ViewData["Title"] = "Apuestas.com";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 class="titulo">APUESTAS.COM</h1>
 
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreLocal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GolesLocal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GolesVisitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreVisitante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-<img src="https://i.gyazo.com/39f49e0b1a536775c4d525c6ae85ef64.png" width:"200px">
+    @*<tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreLocal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreVisitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GolesLocal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GolesVisitante)
+                </td>
+            </tr>
+        }
+    </tbody>*@
+</table>
 
-<a href="https://localhost:44360/Jugadores/Create">REGISTRO</a>
 
 <style>
 
@@ -16,15 +61,13 @@
         background-image: url(https://images6.alphacoders.com/107/1077410.png);
     }
 
-    .titulo{
-        border:2px solid black;
-        color:white;
+    .titulo {
+        border: 2px solid black;
+        color: white;
     }
 
-    img{
-        align-items:center;
+    img {
+        align-items: center;
     }
-
-
 </style>
 
