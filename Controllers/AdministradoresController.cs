@@ -10,22 +10,22 @@ using Apuestas.Models;
 
 namespace Apuestas.Controllers
 {
-    public class PartidosController : Controller
+    public class AdministradoresController : Controller
     {
         private readonly ApuestasDbContext _context;
 
-        public PartidosController(ApuestasDbContext context)
+        public AdministradoresController(ApuestasDbContext context)
         {
             _context = context;
         }
 
-        // GET: Partidos
+        // GET: Administradores
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Partidos.ToListAsync());
+            return View(await _context.Administradores.ToListAsync());
         }
 
-        // GET: Partidos/Details/5
+        // GET: Administradores/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Apuestas.Controllers
                 return NotFound();
             }
 
-            var partido = await _context.Partidos
+            var administrador = await _context.Administradores
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (partido == null)
+            if (administrador == null)
             {
                 return NotFound();
             }
 
-            return View(partido);
+            return View(administrador);
         }
 
-        // GET: Partidos/Create
+        // GET: Administradores/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Partidos/Create
+        // POST: Administradores/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NombreLocal,NombreVisitante,Fecha")] Partido partido)
+        public async Task<IActionResult> Create([Bind("Id,Usuario,Password")] Administrador administrador)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(partido);
+                _context.Add(administrador);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(partido);
+            return View(administrador);
         }
 
-        // GET: Partidos/Edit/5
+        // GET: Administradores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Apuestas.Controllers
                 return NotFound();
             }
 
-            var partido = await _context.Partidos.FindAsync(id);
-            if (partido == null)
+            var administrador = await _context.Administradores.FindAsync(id);
+            if (administrador == null)
             {
                 return NotFound();
             }
-            return View(partido);
+            return View(administrador);
         }
 
-        // POST: Partidos/Edit/5
+        // POST: Administradores/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreLocal,NombreVisitante,Fecha,GolesLocal,GolesVisitante")] Partido partido)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Usuario,Password")] Administrador administrador)
         {
-            if (id != partido.Id)
+            if (id != administrador.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Apuestas.Controllers
             {
                 try
                 {
-                    _context.Update(partido);
+                    _context.Update(administrador);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PartidoExists(partido.Id))
+                    if (!AdministradorExists(administrador.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Apuestas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(partido);
+            return View(administrador);
         }
 
-        // GET: Partidos/Delete/5
+        // GET: Administradores/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,55 +124,30 @@ namespace Apuestas.Controllers
                 return NotFound();
             }
 
-            var partido = await _context.Partidos
+            var administrador = await _context.Administradores
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (partido == null)
+            if (administrador == null)
             {
                 return NotFound();
             }
 
-            return View(partido);
+            return View(administrador);
         }
 
-        // POST: Partidos/Delete/5
+        // POST: Administradores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var partido = await _context.Partidos.FindAsync(id);
-            _context.Partidos.Remove(partido);
+            var administrador = await _context.Administradores.FindAsync(id);
+            _context.Administradores.Remove(administrador);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PartidoExists(int id)
+        private bool AdministradorExists(int id)
         {
-            return _context.Partidos.Any(e => e.Id == id);
+            return _context.Administradores.Any(e => e.Id == id);
         }
-
-        public IActionResult Apostar(Partido partido,Equipo equipo1, Equipo equipo2)
-        {
-            int puntuacion1 = equipo1.Puntuacion;
-            int puntuacion2 = equipo2.Puntuacion;
-            int diferencia = 0;
-
-            if(puntuacion1 > puntuacion2)
-            {
-                diferencia = puntuacion1 - puntuacion2;
-            } else if(puntuacion1 < puntuacion2)
-            {
-                diferencia = puntuacion2 - puntuacion1;
-            }
-
-            if(partido.GolesLocal > partido.GolesVisitante)
-            {
-                //pagar
-            }
-
-
-            return View();
-        }
-
-
     }
 }

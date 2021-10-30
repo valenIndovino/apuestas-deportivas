@@ -1,4 +1,5 @@
 ﻿using Apuestas.BaseDeDatos;
+using Apuestas.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Apuestas.Controllers
     public class LoginController : Controller
     {
         private readonly ApuestasDbContext _context;
+        private int _Return_Url;
 
         public LoginController(ApuestasDbContext context)
         {
@@ -19,5 +21,11 @@ namespace Apuestas.Controllers
         {
             return View();
         }
+
+      
+
+
+
+
     }
 }

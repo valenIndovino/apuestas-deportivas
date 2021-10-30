@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Apuestas.Models
 {
-    public class Jugador : Usuario
-    {   
-        public int Edad { get; set; }
-        public float Saldo { get; set; }
-        public override Rol Rol => Rol.Jugador;
+    public class Administrador : Usuario
+    {
+        public override Rol Rol => Rol.Administrador;
     }
 }

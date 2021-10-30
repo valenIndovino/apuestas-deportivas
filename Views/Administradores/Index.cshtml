@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Apuestas.Models.Jugador>
+﻿@model IEnumerable<Apuestas.Models.Administrador>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,11 +17,9 @@
                 @Html.DisplayNameFor(model => model.Username)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Edad)
+                @Html.DisplayNameFor(model => model.Password)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Saldo)
-            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -31,10 +29,7 @@
                 @Html.DisplayFor(modelItem => item.Username)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Edad)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Saldo)
+                @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
