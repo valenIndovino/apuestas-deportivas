@@ -1,6 +1,6 @@
-﻿using Apuestas.Models;
+﻿using Apuestas.BaseDeDatos;
+using Apuestas.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,16 +11,16 @@ namespace Apuestas.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApuestasDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApuestasDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
-            return View();
+            return View( _context.Partidos.ToList());
         }
 
         public IActionResult Registro()

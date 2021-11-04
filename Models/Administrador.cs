@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace Apuestas.Models
 {
-    public class Administrador : Usuario
+    public class Administrador
     {
-        public override Rol Rol => Rol.Administrador;
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+        public string Mail { get; set; } = "";
+
     }
 }

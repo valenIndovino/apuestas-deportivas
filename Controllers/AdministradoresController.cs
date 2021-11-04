@@ -54,7 +54,7 @@ namespace Apuestas.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Usuario,Password")] Administrador administrador)
+        public async Task<IActionResult> Create([Bind("Id,Username,Password")] Administrador administrador)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Apuestas.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Usuario,Password")] Administrador administrador)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Password")] Administrador administrador)
         {
             if (id != administrador.Id)
             {

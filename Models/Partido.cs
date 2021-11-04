@@ -22,5 +22,19 @@ namespace Apuestas.Models
         public int GolesLocal { get; set; }
         public int GolesVisitante { get; set; }
 
+        public Resultado obtenerGanador(Partido partido)
+        {
+            Resultado ganador = Resultado.EMPATA;
+            if (partido.GolesLocal > partido.GolesVisitante)
+            {
+                ganador = Resultado.GANA;
+            }
+            else if (partido.GolesVisitante > partido.GolesLocal)
+            {
+                ganador = Resultado.PIERDE;
+            }
+            
+            return ganador;
+        }
     }
 }

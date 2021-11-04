@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Apuestas.BaseDeDatos;
 using Apuestas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Apuestas.Controllers
 {
@@ -149,30 +150,26 @@ namespace Apuestas.Controllers
         {
             return _context.Partidos.Any(e => e.Id == id);
         }
-
-        public IActionResult Apostar(Partido partido,Equipo equipo1, Equipo equipo2)
+        // PREGUNTAR [Authorize(Jugador)]
+        public async Task<IActionResult> Apostar(Equipo equipoApostado, Jugador j, String aposto, int? Id)
         {
-            int puntuacion1 = equipo1.Puntuacion;
-            int puntuacion2 = equipo2.Puntuacion;
-            int diferencia = 0;
 
-            if(puntuacion1 > puntuacion2)
+            Partido partido = await _context.Partidos.FindAsync(Id);
+            if (partido == null)
             {
-                diferencia = puntuacion1 - puntuacion2;
-            } else if(puntuacion1 < puntuacion2)
-            {
-                diferencia = puntuacion2 - puntuacion1;
+                return NotFound();
             }
+            Resultado aposte = j.obtenerApostado(aposto);
+            Resultado resultado = partido.obtenerGanador(partido);
 
-            if(partido.GolesLocal > partido.GolesVisitante)
+            //Si llegamos se paga por lo apostado
+            if (aposte == resultado)
             {
-                //pagar
+                j.pagar();
             }
 
 
             return View();
         }
-
-
     }
 }

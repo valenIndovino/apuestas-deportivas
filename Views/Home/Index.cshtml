@@ -26,32 +26,40 @@
             <th>
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
-            <th></th>
+
+            <th>
+                Apostar
+            </th>
         </tr>
     </thead>
 
-    @*<tbody>
+    <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NombreLocal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NombreVisitante)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fecha)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GolesLocal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GolesVisitante)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreLocal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GolesLocal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GolesVisitante)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreVisitante)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="GANA">Gana Local</a>
+                <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="EMPATA">Empatan</a>
+                <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="PIERDE">Gana Visitante</a>
+            </td>
+        </tr>
         }
-    </tbody>*@
+    </tbody>
 </table>
 
 

@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Apuestas.Models
 {
-    public enum Rol
+    public enum Resultado
     {
-        Administrador = 1,
-        Jugador = 2 
+        GANA,
+        EMPATA,
+        PIERDE
     }
 }
