@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Apuestas.Models
@@ -18,7 +19,7 @@ namespace Apuestas.Models
 
         public int Edad { get; set; }
         public float Saldo { get; set; }
-
+      
         public Resultado obtenerApostado (String aposto)
         {
             Resultado r = Resultado.EMPATA;
@@ -29,19 +30,34 @@ namespace Apuestas.Models
                 r = Resultado.PIERDE;
             }
             return r;
-            //Utilizar el botón y que el mismo devuelva el resultado
         }
-        //Si llegamos implementamos el pagar por lo apostado.
 
-        //RECIBIS NOMBRE EQUIPO
-        //SI ELIGE LOCAL = nombreLocal
-        //nombreLocal (buscarEquipo) -> devuelve un Equipo
-        //Si encontró, compara ambas puntuaciones y paga.
-        //Método llamado saldoAPagar => puntuacionLocal > puntuacionVisitante && Resultado.GANA => (puntuacionLocal - puntuacionVisitante) = diferencia => 1.40 + 0,02 * diferencia
-
-        public void pagar()
+        public int CalcularDiferencia(Equipo equipoApostado, Equipo equipoRival)
         {
-            this.Saldo += 150;
+            int diferencia;
+
+            if (equipoApostado.Puntuacion < equipoRival.Puntuacion)
+            {
+                diferencia = equipoRival.Puntuacion - equipoApostado.Puntuacion;
+            } else
+            {
+                diferencia = 0;
+            }
+            return diferencia;
+        }
+        public void pagar(float apostado, String apuesta, Equipo equipoApostado, Equipo equipoRival)
+        {
+            int diferencia = CalcularDiferencia(equipoApostado, equipoRival);
+            if (apuesta.Equals("GANA"))
+            {
+                this.Saldo += apostado * (1.40f + (0.02f * diferencia));
+            } else if (apuesta.Equals("PIERDE"))
+            {
+                this.Saldo += apostado * (1.60f + (0.04f * diferencia));
+            } else if (apuesta.Equals("EMPATA"))
+            {
+                this.Saldo += apostado * 1.50f;
+            }
         }
     }
 }

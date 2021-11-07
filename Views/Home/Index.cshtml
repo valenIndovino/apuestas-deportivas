@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Apuestas.Models.Partido>
 
 @{
-    ViewData["Title"] = "Apuestas.com";
+    ViewData["Title"] = "Inicio";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="titulo">APUESTAS.COM</h1>
+<h1 class="titulo">Apuestas Maradonianas (marado marado)</h1>
 
 
 <table class="table">
@@ -29,6 +29,9 @@
 
             <th>
                 Apostar
+            </th>
+            <th>
+                Monto a apostar
             </th>
         </tr>
     </thead>
@@ -56,6 +59,9 @@
                 <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="GANA">Gana Local</a>
                 <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="EMPATA">Empatan</a>
                 <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="PIERDE">Gana Visitante</a>
+            </td>
+            <td>
+                <a asp-action="Apostar" asp-controller="Partidos">Coloque su apuesta</a>
             </td>
         </tr>
         }

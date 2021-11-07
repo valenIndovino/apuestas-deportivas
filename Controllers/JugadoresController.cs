@@ -58,29 +58,49 @@ namespace Apuestas.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 1 obtener todos los jugadores
-                //var listaJugadores = _context.Jugadores.ToList();
-                //2 por cada usuario, ver si se repite el usuario contra el usuario recibido
-                //var noSeRepite = !listaJugadores.Any(jug => jug.Usuario.Equals(jugador.Usuario);
-
-                if (this.ValidarRepeticion(jugador))
+                var listaJugadores = _context.Jugadores.ToList();
+                bool noSeRepite = !listaJugadores.Any(jug => jug.Username.Equals(jugador.Username));
+                if (!noSeRepite)
                 {
-                    _context.Add(jugador);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ViewBag.Error = "Email Repetido";
+                    ViewBag.Error = "Usuario Repetido";
                     return View(jugador);
                 }
-
+                bool validarRepeticion = !listaJugadores.Any(jug => jug.Mail.Equals(jugador.Mail));
+                if (!validarRepeticion)
+                {
+                    ViewBag.Error = "Usuario existente";
+                    return View(jugador);
+                }
             }
-            return View(jugador);
+            if (this.ValidarRepeticion(jugador))
+            {
+                _context.Add(jugador);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Error = "Email Repetido";
+                return View(jugador);
+            }
+            //return View(jugador);
         }
 
-        // GET: Jugadores/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+    private bool ValidarRepeticion(Jugador usuario)
+    {
+        List<Jugador> listaUsuarios = _context.Jugadores.ToList<Jugador>();
+        listaUsuarios = _context.Jugadores.ToList<Jugador>();
+        //2. Por cada usuario, ver si el email se repite contra el email recibido(usuario)
+        var noSeRepite = !listaUsuarios
+            .Where(a => a.Mail != null)
+            .Any(usu => usu.Mail.Equals(usuario.Mail, StringComparison.OrdinalIgnoreCase) &&
+            usu.Id != usuario.Id);
+
+        return noSeRepite;
+    }
+
+    // GET: Jugadores/Edit/5
+    public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -129,20 +149,6 @@ namespace Apuestas.Controllers
             }
             return View(jugador);
         }
-        private bool ValidarRepeticion(Jugador jugador)
-        {
-            List<Jugador> listaUsuarios = _context.Jugadores.ToList<Jugador>();
-            listaUsuarios = _context.Jugadores.ToList<Jugador>();
-            //2. Por cada usuario, ver si el email se repite contra el email recibido(usuario)
-            var noSeRepite = !listaUsuarios
-                .Where(a => a.Mail != null)
-                .Any(usu => usu.Mail.Equals(jugador.Mail, StringComparison.OrdinalIgnoreCase) &&
-                usu.Id != jugador.Id);
-
-            return noSeRepite;
-        }
-
-
 
 
         // GET: Jugadores/Delete/5

@@ -54,17 +54,49 @@ namespace Apuestas.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Username,Password")] Administrador administrador)
+        public async Task<IActionResult> Create([Bind("Id,Username,Mail,Password")] Administrador administrador)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(administrador);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var listaAdministradores = _context.Administradores.ToList();
+                bool noSeRepite = !listaAdministradores.Any(jug => jug.Username.Equals(administrador.Username));
+                if (!noSeRepite)
+                {
+                    ViewBag.Error = "Administrador existente";
+                    return View(administrador);
+                }
+                bool validarMail = !listaAdministradores.Any(jug => jug.Mail.Equals(administrador.Mail));
+                if (!validarMail)
+                {
+                    ViewBag.Error = "Administrador existente";
+                    return View(administrador);
+                }
+                if (this.ValidarRepeticion(administrador))
+                {
+                    _context.Add(administrador);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Email Repetido";
+                    return View(administrador);
+                }
             }
             return View(administrador);
         }
+        private bool ValidarRepeticion(Administrador administrador)
+        {
+            List<Administrador> listaUsuarios = _context.Administradores.ToList<Administrador>();
+            listaUsuarios = _context.Administradores.ToList<Administrador>();
+            //2. Por cada usuario, ver si el email se repite contra el email recibido(usuario)
+            var noSeRepite = !listaUsuarios
+                .Where(a => a.Mail != null)
+                .Any(usu => usu.Mail.Equals(administrador.Mail, StringComparison.OrdinalIgnoreCase) &&
+                usu.Id != administrador.Id);
 
+            return noSeRepite;
+        }
         // GET: Administradores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

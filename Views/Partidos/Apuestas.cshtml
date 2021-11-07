@@ -1,14 +1,13 @@
 ﻿@model IEnumerable<Apuestas.Models.Partido>
 
 @{
-    ViewData["Title"] = "Lista de partidos";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Apuestas";
 }
 
-<h1>Partidos disponibles</h1>
+<h1>Apuestas</h1>
 
 <p>
-    <a asp-action="Create">Crear Nuevo</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -58,12 +57,3 @@
 }
     </tbody>
 </table>
-
-
-<style>
-
-    table {
-        background-color: white;
-    }
-
-</style>

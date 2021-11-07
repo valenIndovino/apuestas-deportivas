@@ -151,13 +151,23 @@ namespace Apuestas.Controllers
             return _context.Partidos.Any(e => e.Id == id);
         }
         // PREGUNTAR [Authorize(Jugador)]
-        public async Task<IActionResult> Apostar(Equipo equipoApostado, Jugador j, String aposto, int? Id)
+        public async Task<IActionResult> Apostar(float apuesta, Jugador j, String aposto, int? Id)
         {
-
             Partido partido = await _context.Partidos.FindAsync(Id);
+            Equipo equipoRival = null;
+            Equipo equipoApostado = null;
             if (partido == null)
             {
                 return NotFound();
+            }
+            if(aposto.Equals("GANA"))
+            {
+                equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
+                equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
+            } else if (aposto.Equals("PIERDE"))
+            {
+                equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
+                equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
             }
             Resultado aposte = j.obtenerApostado(aposto);
             Resultado resultado = partido.obtenerGanador(partido);
@@ -165,11 +175,11 @@ namespace Apuestas.Controllers
             //Si llegamos se paga por lo apostado
             if (aposte == resultado)
             {
-                j.pagar();
+                j.pagar(apuesta, aposto, equipoApostado, equipoRival);
             }
 
 
-            return View();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }
