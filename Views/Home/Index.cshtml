@@ -1,37 +1,35 @@
 ﻿@model IEnumerable<Apuestas.Models.Partido>
 
+
 @{
     ViewData["Title"] = "Inicio";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="titulo">Apuestas Maradonianas (marado marado)</h1>
+<h1 class="titulo">APUESTAS MARADONIANAS</h1>
 
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NombreLocal)
+                LOCAL
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GolesLocal)
+                <img src="https://www.nicepng.com/png/detail/120-1200789_dibujo-pelota-png-fs-la-massana.png" width="30" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GolesVisitante)
+                <img src="https://www.nicepng.com/png/detail/120-1200789_dibujo-pelota-png-fs-la-massana.png" width="30" />
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NombreVisitante)
+                VISITANTE
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fecha)
+                FECHA
             </th>
 
             <th>
-                Apostar
-            </th>
-            <th>
-                Monto a apostar
+                APOSTAR
             </th>
         </tr>
     </thead>
@@ -39,31 +37,35 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreLocal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GolesLocal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GolesVisitante)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreVisitante)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="GANA">Gana Local</a>
-                <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="EMPATA">Empatan</a>
-                <a asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" asp-route-aposto="PIERDE">Gana Visitante</a>
-            </td>
-            <td>
-                <a asp-action="Apostar" asp-controller="Partidos">Coloque su apuesta</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreLocal)
+                </td>
+                <td>
+                    <bold> @Html.DisplayFor(modelItem => item.GolesLocal)</bold>
+                </td>
+                <td>
+                    <bold> @Html.DisplayFor(modelItem => item.GolesVisitante)</bold>
+                </td>
+                <td>        
+                    @Html.DisplayFor(modelItem => item.NombreVisitante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    <form>
+                        <input type="number" class="form-control" name="apuesta" min="1" required />
+                        <select name="aposto">
+                            <option value="GANA">Gana Local</option>
+                            <option value="EMPATA">Empata</option>
+                            <option value="PIERDE">Gana Visitante</option>
+                        </select>
+                        <button asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" type="submit">Apostar</button>
+                    </form>
+                </td>
+            </tr>
+
         }
     </tbody>
 </table>
@@ -84,10 +86,16 @@
         align-items: center;
     }
 
-   
+
     table {
-        background-color: white;
+        background-color: #71AB7D;
+        border-radius: 16px;
+        vertical-align: middle;
     }
 
+    th {
+        text-align: center;
+        font-weight: bold;
+    }
 </style>
 

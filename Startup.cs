@@ -38,7 +38,7 @@ namespace Apuestas
             opciones.LoginPath = "/Login/Login";
             opciones.AccessDeniedPath = "/Login/NoAutorizado";
             opciones.LogoutPath = "/Login/Logout";
-            opciones.ExpireTimeSpan = System.TimeSpan.FromMinutes(1);
+            opciones.ExpireTimeSpan = System.TimeSpan.FromMinutes(60);
         }
 
 
@@ -62,12 +62,15 @@ namespace Apuestas
 
             app.UseAuthorization();
 
+            app.UseAuthentication();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseCookiePolicy();
         }
     }
 }
