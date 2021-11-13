@@ -75,6 +75,7 @@ namespace Apuestas.Controllers
             if (this.ValidarRepeticion(jugador))
             {
                 _context.Add(jugador);
+                jugador.Saldo += 1000;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -86,7 +87,7 @@ namespace Apuestas.Controllers
             //return View(jugador);
         }
 
-    private bool ValidarRepeticion(Jugador usuario)
+        private bool ValidarRepeticion(Jugador usuario)
     {
         List<Jugador> listaUsuarios = _context.Jugadores.ToList<Jugador>();
         listaUsuarios = _context.Jugadores.ToList<Jugador>();

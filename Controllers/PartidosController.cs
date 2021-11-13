@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Apuestas.BaseDeDatos;
 using Apuestas.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.Threading;
 
 namespace Apuestas.Controllers
 {
@@ -151,8 +153,11 @@ namespace Apuestas.Controllers
             return _context.Partidos.Any(e => e.Id == id);
         }
         // PREGUNTAR [Authorize(Jugador)]
-        public async Task<IActionResult> Apostar(float apuesta, Jugador ju, String aposto, int? Id)
+        public async Task<IActionResult> Apostar(float apuesta, String aposto, int? Id)
         {
+            var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+            int idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
             Partido partido = await _context.Partidos.FindAsync(Id);
             if (partido == null)
             {
@@ -162,11 +167,12 @@ namespace Apuestas.Controllers
             fechaPartido = partido.Fecha;
             DateTime fechaActual;
             fechaActual = DateTime.Now;
-            if (fechaPartido > fechaActual)
+           //El signo del if va al revés, lo que hace es no dejar apostar si el partido ya empezó.
+            if (fechaPartido < fechaActual)
             {
                 Equipo equipoRival = null;
                 Equipo equipoApostado = null;
-                Jugador j = await _context.Jugadores.FindAsync(ju.Id);
+                Jugador j = await _context.Jugadores.FindAsync(idUsuario);
                 if (aposto.Equals("GANA"))
                 {
                     equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
@@ -186,6 +192,10 @@ namespace Apuestas.Controllers
                     if (j.Saldo >= apuesta)
                     {
                         j.pagar(apuesta, aposto, equipoApostado, equipoRival);
+                        _context.Jugadores.Update(j);
+                        _context.SaveChanges();
+
+
                     }
                 }
             }
