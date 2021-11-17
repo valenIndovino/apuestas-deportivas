@@ -1,10 +1,13 @@
 ﻿@{
-        Layout = "_LayoutLogin";
+    Layout = "_LayoutLogin";
+    ViewData["Title"] = "Inicia Sesion";
     }
 
-    <div class="text-center">
-        <h1>Ingresa a Apuestas Maradonianas</h1>
-    </div>
+<div class="text-center">
+   
+    <h1 style="color:white"><b>Ingresa a Apuestas Maradonianas</b></h1>
+
+</div>
 
     <hr />
 
@@ -15,21 +18,49 @@
                     @ViewBag.Error
                 </div>
                 <div class="form-group">
-                    <label laber-for="username" class="control-label">Usuario</label>
+                    <label laber-for="username" class="control-label"style="color:white">Usuario:</label>
                     <input name="username" class="form-control" type="text" value="@ViewBag.Username" />
                 </div>
                 <div class="form-group">
-                    <label label-for="Password" class="control-label">Contraseña:</label>
+                    <label label-for="Password" class="control-label"style="color:white">Contraseña:</label>
                     <input name="password" class="form-control" type="password" />
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Login" class="btn btn-success" />
-                    <label>No tienes una cuenta creada, puedes crear una...</label>
+                    <label style="color:white">No tienes una cuenta creada, puedes crear una...</label>
                     <a asp-action="Create" asp-controller="Jugadores" class="btn btn-success">Registrarse</a>
 </div>
             </form>
 </div>
 </div>
+    <style>
+
+
+        body {
+            background-image: url(https://www.wallpapertip.com/wmimgs/2-27176_football-wallpapers-hd-background-pictures-top-soccer-field.jpg);
+        } 
+
+        .titulo {
+            border: 2px solid black;
+            color: white;
+        }
+
+        img {
+            align-items: center;
+        }
+
+
+        table {
+            background-color: #71AB7D;
+            border-radius: 16px;
+            vertical-align: middle;
+        }
+
+        th {
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 
 
 

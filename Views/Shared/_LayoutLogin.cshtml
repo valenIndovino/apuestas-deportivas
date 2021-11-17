@@ -3,23 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]Apuestas Maradonianas</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" href="https://www.nicepng.com/png/detail/120-1200789_dibujo-pelota-png-fs-la-massana.png" />
 </head>
 <body class="fondo">
 
-    <header>
-        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Futbol</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-            </nav>*@
-    </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -36,6 +26,10 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 <style>
+
+    body {
+        background-image: url(https://www.wallpapertip.com/wmimgs/2-27176_football-wallpapers-hd-background-pictures-top-soccer-field.jpg);
+    }
     .titulo {
         border: 2px solid black;
         color: white;

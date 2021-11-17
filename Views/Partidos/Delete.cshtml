@@ -1,13 +1,12 @@
 ﻿@model Apuestas.Models.Partido
 
 @{
-    ViewData["Title"] = "Eliminar partido";
+    ViewData["Title"] = "Eliminar Partido";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Elimina un partido</h1>
+<h1>¿Seguro que deseas eliminar este partido?</h1>
 
-<h3>Deseas eliminar un partido?</h3>
 <div>
     <h4>Partido</h4>
     <hr />
@@ -47,6 +46,16 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Volver a la lista</a>
     </form>
 </div>
+
+<style>
+    h4 {
+        color: white;
+    }
+    dt, dd {
+        color: white;
+    }
+
+</style>
