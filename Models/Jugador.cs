@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Apuestas.Models
@@ -19,7 +20,7 @@ namespace Apuestas.Models
 
         public int Edad { get; set; }
         public float Saldo { get; set; }
-      
+
         public Resultado obtenerApostado (String aposto)
         {
             Resultado r = Resultado.EMPATA;

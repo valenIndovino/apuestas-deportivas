@@ -19,6 +19,8 @@ namespace Apuestas.BaseDeDatos
 
         public DbSet<Partido> Partidos { get; set; }
         public DbSet<Administrador> Administradores { get; set; }
+        public DbSet<Apostador> Apostadores { get; set; }
+
         public object Partido { get; internal set; }
     }
 

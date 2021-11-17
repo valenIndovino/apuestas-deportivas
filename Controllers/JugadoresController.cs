@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Apuestas.BaseDeDatos;
 using Apuestas.Models;
+using System.Security.Claims;
+using System.Threading;
 
 namespace Apuestas.Controllers
 {
@@ -77,7 +79,7 @@ namespace Apuestas.Controllers
                 _context.Add(jugador);
                 jugador.Saldo += 1000;
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(LoginController.Login), "Login");
             }
             else
             {
@@ -184,6 +186,14 @@ namespace Apuestas.Controllers
         private bool JugadorExists(int id)
         {
             return _context.Jugadores.Any(e => e.Id == id);
+        }
+
+        public async Task<float> MostrarSaldo()
+        {
+            var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+            int idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Jugador jugador = await _context.Jugadores.FindAsync(idUsuario);
+            return jugador.Saldo;
         }
     }
 }

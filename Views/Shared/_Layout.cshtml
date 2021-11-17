@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@*//@model Apuestas.Controllers.JugadoresController*@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,6 +25,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Jugadores" asp-action="Create">Registrarse</a>
                         </li>
+                        @*<li class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.MostrarSaldo())
+                        </li>*@
                     </ul>
                 </div>
             </div>
@@ -49,11 +53,6 @@
         body {
             background-image: url(https://images.alphacoders.com/923/923986.jpg);
         }
-
-       
-
-
-
     </style>
 </body>
 </html>
