@@ -54,7 +54,10 @@
                     @Html.DisplayFor(modelItem => item.Fecha)
                 </td>
                 <td>
-                    <form>
+                    <form method="post" asp-action="Apostar">
+                        <div class="text-danger">
+                            @ViewBag.Error
+                        </div>
                         <input type="number" class="form-control" name="apuesta" min="1" required />
                         <select name="aposto">
                             <option value="GANA">Gana @item.NombreLocal</option>

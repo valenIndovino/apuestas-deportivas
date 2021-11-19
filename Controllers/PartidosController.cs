@@ -183,27 +183,32 @@ namespace Apuestas.Controllers
                     equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
                     equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
                 }
+                else if(aposto.Equals("EMPATA"))
+                {
+                    equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
+                    equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
+                }
                 Resultado aposte = j.obtenerApostado(aposto);
                 Resultado resultado = partido.obtenerGanador(partido);
 
                 //Si llegamos se paga por lo apostado
-                if (aposte == resultado)
+                if (aposte == resultado && j.Saldo >= apuesta)
                 {
-                    if (j.Saldo >= apuesta)
-                    {
                         j.pagar(apuesta, aposto, equipoApostado, equipoRival);
                         _context.Jugadores.Update(j);
                         _context.SaveChanges();
+                } else if (aposte != resultado && j.Saldo >= apuesta)
+                {
+                    j.Saldo = j.Saldo - apuesta;
+                    _context.Jugadores.Update(j);
+                    _context.SaveChanges();
+                } else
+                {
 
-
-                    }
+                    ViewBag.Error = "Saldo insuficiente";
                 }
-            }
-
-
+        }
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
-
-
 }
