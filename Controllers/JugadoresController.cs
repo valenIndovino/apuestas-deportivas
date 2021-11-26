@@ -74,36 +74,38 @@ namespace Apuestas.Controllers
                     return View(jugador);
                 }
             }
-            if (this.ValidarRepeticion(jugador))
-            {
-                _context.Add(jugador);
-                jugador.Saldo += 1000;
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(LoginController.Login), "Login");
-            }
-            else
-            {
-                ViewBag.Error = "Email Repetido";
-                return View(jugador);
-            }
+
+            jugador.rol = Rol.Jugador;
+            _context.Add(jugador);
+            jugador.Saldo += 1000;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(LoginController.Login), "Login");
+            //if (this.ValidarRepeticion(jugador))
+            //{
+            //}
+            //else
+            //{
+            //    ViewBag.Error = "Email Repetido";
+            //    return View(jugador);
+            //}
             //return View(jugador);
         }
 
         private bool ValidarRepeticion(Jugador usuario)
-    {
-        List<Jugador> listaUsuarios = _context.Jugadores.ToList<Jugador>();
-        listaUsuarios = _context.Jugadores.ToList<Jugador>();
-        //2. Por cada usuario, ver si el email se repite contra el email recibido(usuario)
-        var noSeRepite = !listaUsuarios
-            .Where(a => a.Mail != null)
-            .Any(usu => usu.Mail.Equals(usuario.Mail, StringComparison.OrdinalIgnoreCase) &&
-            usu.Id != usuario.Id);
+        {
+            List<Jugador> listaUsuarios = _context.Jugadores.ToList<Jugador>();
+            listaUsuarios = _context.Jugadores.ToList<Jugador>();
+            //2. Por cada usuario, ver si el email se repite contra el email recibido(usuario)
+            var noSeRepite = !listaUsuarios
+                .Where(a => a.Mail != null)
+                .Any(usu => usu.Mail.Equals(usuario.Mail, StringComparison.OrdinalIgnoreCase) &&
+                usu.Id != usuario.Id);
 
-        return noSeRepite;
-    }
+            return noSeRepite;
+        }
 
-    // GET: Jugadores/Edit/5
-    public async Task<IActionResult> Edit(int? id)
+        // GET: Jugadores/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -188,6 +190,7 @@ namespace Apuestas.Controllers
             return _context.Jugadores.Any(e => e.Id == id);
         }
 
+        [HttpGet]
         public async Task<float> MostrarSaldo()
         {
             var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;

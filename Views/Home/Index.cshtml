@@ -35,8 +35,10 @@
     </thead>
 
     <tbody>
+        @{ int id = 0;}
         @foreach (var item in Model)
         {
+            @(id++)
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.NombreLocal)
@@ -47,7 +49,7 @@
                 <td>
                     <bold> @Html.DisplayFor(modelItem => item.GolesVisitante)</bold>
                 </td>
-                <td>        
+                <td>
                     @Html.DisplayFor(modelItem => item.NombreVisitante)
                 </td>
                 <td>
@@ -59,7 +61,7 @@
                             @ViewBag.Error
                         </div>
                         <input type="number" class="form-control" name="apuesta" min="1" required />
-                        <select name="aposto">
+                        <select name="aposto_@id">
                             <option value="GANA">Gana @item.NombreLocal</option>
                             <option value="EMPATA">Empata</option>
                             <option value="PIERDE">Gana @item.NombreVisitante</option>

@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Apuestas.BaseDeDatos;
 using Apuestas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Apuestas.Controllers
 {
+
+    //[Authorize(Roles = "Administrador")]
     public class EquiposController : Controller
     {
         private readonly ApuestasDbContext _context;
@@ -54,6 +57,9 @@ namespace Apuestas.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        
+
         public async Task<IActionResult> Create([Bind("Nombre,Puntuacion")] Equipo equipo)
         {
             if (ModelState.IsValid)

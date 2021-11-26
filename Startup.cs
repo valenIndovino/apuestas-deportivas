@@ -27,7 +27,7 @@ namespace Apuestas
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(ConfiguracionCookie);
-
+            services.AddSession();
             services.AddControllersWithViews();
             services.AddDbContext<ApuestasDbContext>(options => options.UseSqlite(@"filename=C:\Users\ferdi\OneDrive\Escritorio\Apuestas.db"));
 

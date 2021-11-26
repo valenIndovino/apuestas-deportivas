@@ -13,6 +13,7 @@ using System.Threading;
 
 namespace Apuestas.Controllers
 {
+    //[Authorize]
     public class PartidosController : Controller
     {
         private readonly ApuestasDbContext _context;

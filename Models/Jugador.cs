@@ -21,6 +21,8 @@ namespace Apuestas.Models
         public int Edad { get; set; }
         public float Saldo { get; set; }
 
+        public Rol rol = Rol.Jugador;
+
         public Resultado obtenerApostado (String aposto)
         {
             Resultado r = Resultado.EMPATA;

@@ -16,5 +16,7 @@ namespace Apuestas.Models
 
         public string Mail { get; set; } = "";
 
+        public Rol rol = Rol.Administrador;
+
     }
 }

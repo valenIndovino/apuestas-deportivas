@@ -34,6 +34,8 @@ namespace Apuestas.Controllers
         public IActionResult Login(string username, string password)
         {
             string returnUrl = TempData[_Return_Url] as string;
+            username = "pepe12222"; 
+            password = "1234567890";
 
             if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
             {
