@@ -180,7 +180,7 @@ namespace Apuestas.Controllers
         {
             var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
             int idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-           foreach (Historial h in) {
+          // foreach (Historial h in) {
             if (idUsuario == historial.Jugador)
             {
                 Partido partido = await _context.Partidos.FindAsync(historial.Partido);
@@ -190,10 +190,10 @@ namespace Apuestas.Controllers
                 fechaActual = DateTime.Now;
                 if (fechaActual >= fechaPartido.AddHours(24))
                 {
-                    //partido.Cobrar(historial);
+                   // partido.Cobrar(historial);
                 }
             }
-           }
+         //  }
             //Falta un botón en el navbar "Cobrar" que recorre la lista de apuestas en el historial (RecorrerLista)
             //de cada jugador.
             //Si se cumple el método paga y sino no paga.
