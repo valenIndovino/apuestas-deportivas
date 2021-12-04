@@ -10,6 +10,7 @@ using Apuestas.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Threading;
+using System.ComponentModel.DataAnnotations;
 
 namespace Apuestas.Controllers
 {
@@ -47,6 +48,7 @@ namespace Apuestas.Controllers
             return View(partido);
         }
 
+
         // GET: Partidos/Create
         public IActionResult Create()
         {
@@ -58,6 +60,7 @@ namespace Apuestas.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Create([Bind("Id,NombreLocal,NombreVisitante,Fecha")] Partido partido)
         {
             if (ModelState.IsValid)
@@ -153,63 +156,47 @@ namespace Apuestas.Controllers
         {
             return _context.Partidos.Any(e => e.Id == id);
         }
-        // PREGUNTAR [Authorize(Jugador)]
-        public async Task<IActionResult> Apostar(float apuesta, String aposto, int? Id)
+        //[Authorize(Roles = "Jugador")]
+        public async Task<IActionResult> Cobrar(Historial h)
         {
-            var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
-            int idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            Partido partido = await _context.Partidos.FindAsync(Id);
+            Partido partido = await _context.Partidos.FindAsync(h.Partido);
             if (partido == null)
             {
                 return NotFound();
             }
-            DateTime fechaPartido;
-            fechaPartido = partido.Fecha;
-            DateTime fechaActual;
-            fechaActual = DateTime.Now;
-           //El signo del if va al revés, lo que hace es no dejar apostar si el partido ya empezó.
-            if (fechaPartido < fechaActual)
-            {
                 Equipo equipoRival = null;
                 Equipo equipoApostado = null;
-                Jugador j = await _context.Jugadores.FindAsync(idUsuario);
-                if (aposto.Equals("GANA"))
+                Jugador j = await _context.Jugadores.FindAsync(h.Jugador);
+                if (h.Resultado.Equals("GANA"))
                 {
                     equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
                     equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
                 }
-                else if (aposto.Equals("PIERDE"))
+                else if (h.Resultado.Equals("PIERDE"))
                 {
                     equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
                     equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
                 }
-                else if(aposto.Equals("EMPATA"))
+                else if(h.Resultado.Equals("EMPATA"))
                 {
                     equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
                     equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
                 }
-                Resultado aposte = j.obtenerApostado(aposto);
+                Resultado aposte = j.obtenerApostado(h.Resultado);
                 Resultado resultado = partido.obtenerGanador(partido);
-
+                
                 //Si llegamos se paga por lo apostado
-                if (aposte == resultado && j.Saldo >= apuesta)
+                if (aposte == resultado)
                 {
-                        j.pagar(apuesta, aposto, equipoApostado, equipoRival);
+                        j.pagar(h.CantApostado, h.Resultado, equipoApostado, equipoRival);
                         _context.Jugadores.Update(j);
                         _context.SaveChanges();
-                } else if (aposte != resultado && j.Saldo >= apuesta)
-                {
-                    j.Saldo = j.Saldo - apuesta;
-                    _context.Jugadores.Update(j);
-                    _context.SaveChanges();
-                } else
-                {
-
-                    ViewBag.Error = "Saldo insuficiente";
                 }
-        }
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
     }
+
+
+
 }

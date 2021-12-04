@@ -27,7 +27,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
                         </li>
                         <li class="nav-item">
-                            <p class="nav-link text-dark">Logout</p>  <div class="nav-link text-dark" id="saldo"></div>
+                            <p class="nav-link text-dark">Saldo: </p>  <div class="nav-link text-dark" id="saldo"></div>
                         </li>
                             
                     </ul>
@@ -38,8 +38,8 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            <button class="navbar-toggler" type="button" id="btnSaldo" name="btnSaldo">
-                <span class="navbar-toggler-icon">actualizar</span>
+            <button class="navbar-toggler" type="button" id="btnSaldo" name="btnSaldo" style="color:white">
+                <span class="navbar-toggler-icon">Mostrar Saldo</span>
             </button>
             @RenderBody()
         </main>
@@ -58,7 +58,7 @@
     <style>
         body {
             background-image: url(https://images.alphacoders.com/923/923986.jpg);
-            background-image:
+            
         }
 
         h1 {

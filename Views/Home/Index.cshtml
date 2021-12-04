@@ -35,10 +35,8 @@
     </thead>
 
     <tbody>
-        @{ int id = 0;}
         @foreach (var item in Model)
         {
-            @(id++)
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.NombreLocal)
@@ -56,17 +54,17 @@
                     @Html.DisplayFor(modelItem => item.Fecha)
                 </td>
                 <td>
-                    <form method="post" asp-action="Apostar">
+                    <form method="post" asp-action="CrearHistorial">
                         <div class="text-danger">
                             @ViewBag.Error
                         </div>
                         <input type="number" class="form-control" name="apuesta" min="1" required />
-                        <select name="aposto_@id">
+                        <select name="aposto">
                             <option value="GANA">Gana @item.NombreLocal</option>
                             <option value="EMPATA">Empata</option>
                             <option value="PIERDE">Gana @item.NombreVisitante</option>
                         </select>
-                        <button asp-action="Apostar" asp-controller="Partidos" asp-route-Id="@item.Id" type="submit">Apostar</button>
+                        <button asp-action="CrearHistorial" asp-controller="Historiales" asp-route-Id="@item.Id" type="submit">Apostar</button>
                     </form>
                 </td>
             </tr>
