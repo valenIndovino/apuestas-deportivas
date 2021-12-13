@@ -9,6 +9,7 @@ using Apuestas.BaseDeDatos;
 using Apuestas.Models;
 using System.Security.Claims;
 using System.Threading;
+using System.Data.Entity;
 
 namespace Apuestas.Controllers
 {
@@ -58,7 +59,7 @@ namespace Apuestas.Controllers
 
             Partido partido = await _context.Partidos.FindAsync(Id);
 
-             Historial h = new Historial(partido.Id, partido.Fecha, aposto, idUsuario, apuesta);
+            Historial h = new Historial(partido.Id, partido.Fecha, aposto, idUsuario, apuesta);
 
             DateTime fechaPartido;
             fechaPartido = partido.Fecha;
@@ -176,27 +177,65 @@ namespace Apuestas.Controllers
             return _context.Historials.Any(e => e.Id == id);
         }
 
-        public async Task RecorrerLista(Historial historial)
+        public async Task<IActionResult> RecorrerLista()
         {
             var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
             int idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-          // foreach (Historial h in) {
-            if (idUsuario == historial.Jugador)
+            Jugador j = await _context.Jugadores.FindAsync(idUsuario);
+
+
+            foreach (Historial h in _context.Historials)
             {
-                Partido partido = await _context.Partidos.FindAsync(historial.Partido);
-                DateTime fechaPartido;
-                fechaPartido = partido.Fecha;
-                DateTime fechaActual;
-                fechaActual = DateTime.Now;
-                if (fechaActual >= fechaPartido.AddHours(24))
+                if (idUsuario == h.Jugador)
                 {
-                   // partido.Cobrar(historial);
+                    if (h.Pagado == "NO")
+                    {
+
+                        Partido partido = await _context.Partidos.FindAsync(h.Partido);
+                        DateTime fechaPartido = partido.Fecha;
+                        DateTime fechaActual = DateTime.Now;
+                        if (fechaActual >= fechaPartido.AddHours(24))
+                        {
+                            Equipo equipoRival = null;
+                            Equipo equipoApostado = null;
+                            if (h.Resultado.Equals("GANA"))
+                            {
+                                equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
+                                equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
+                            }
+                            else if (h.Resultado.Equals("PIERDE"))
+                            {
+                                equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
+                                equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
+                            }
+                            else if (h.Resultado.Equals("EMPATA"))
+                            {
+                                equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
+                                equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
+                            }
+                            Resultado aposte = j.obtenerApostado(h.Resultado);
+                            Resultado resultado = partido.obtenerGanador(partido);
+
+                            //Si llegamos se paga por lo apostado
+                            if (aposte == resultado)
+                            {
+                                j.pagar(h.CantApostado, h.Resultado, equipoApostado, equipoRival);
+                                h.Pagado = "SI";
+                                _context.Historials.Update(h);
+                                _context.Jugadores.Update(j);
+                                _context.SaveChanges();
+                            }
+                        }
+                    
+                    }
                 }
+                //  }
+                //Falta un botón en el navbar "Cobrar" que recorre la lista de apuestas en el historial (RecorrerLista)
+                //de cada jugador.
+                //Si se cumple el método paga y sino no paga.
             }
-         //  }
-            //Falta un botón en el navbar "Cobrar" que recorre la lista de apuestas en el historial (RecorrerLista)
-            //de cada jugador.
-            //Si se cumple el método paga y sino no paga.
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }

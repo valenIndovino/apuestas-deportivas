@@ -27,7 +27,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
                         </li>
                         <li class="nav-item">
-                            <p class="nav-link text-dark">Saldo: </p>  <div class="nav-link text-dark" id="saldo"></div>
+                            <p class="nav-link text-dark">Saldo: </p>  <p class="nav-link text-dark" id="saldo"></p>
                         </li>
                             
                     </ul>
@@ -38,9 +38,12 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            <button class="navbar-toggler" type="button" id="btnSaldo" name="btnSaldo" style="color:white">
-                <span class="navbar-toggler-icon">Mostrar Saldo</span>
+            <button type="button" id="btnSaldo" name="btnSaldo" class="btn btn-outline-success">
+                Mostrar Saldo
             </button>
+            <form method="post" asp-action="RecorrerLista">
+                <button asp-action="RecorrerLista" asp-controller="Historiales" type="submit" class="btn btn-outline-success" style="display: inline">Intentar Cobrar</button>
+            </form>
             @RenderBody()
         </main>
     </div>

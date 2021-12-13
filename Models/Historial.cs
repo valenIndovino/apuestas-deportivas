@@ -21,6 +21,7 @@ namespace Apuestas.Models
             this.Resultado = resultado;
             this.Jugador = jugador;
             this.CantApostado = apostado;
+            this.Pagado = "NO";
         }
 
         [Key]
@@ -33,6 +34,7 @@ namespace Apuestas.Models
         [ForeignKey(nameof(Jugador))]
         public int Jugador { get; set; }
         public float CantApostado { get; set; }
+        public String Pagado{ get; set; }
 
     }
 }

@@ -156,44 +156,7 @@ namespace Apuestas.Controllers
         {
             return _context.Partidos.Any(e => e.Id == id);
         }
-        //[Authorize(Roles = "Jugador")]
-        public async Task<IActionResult> Cobrar(Historial h)
-        {
-            Partido partido = await _context.Partidos.FindAsync(h.Partido);
-            if (partido == null)
-            {
-                return NotFound();
-            }
-                Equipo equipoRival = null;
-                Equipo equipoApostado = null;
-                Jugador j = await _context.Jugadores.FindAsync(h.Jugador);
-                if (h.Resultado.Equals("GANA"))
-                {
-                    equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
-                    equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
-                }
-                else if (h.Resultado.Equals("PIERDE"))
-                {
-                    equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
-                    equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
-                }
-                else if(h.Resultado.Equals("EMPATA"))
-                {
-                    equipoRival = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreLocal);
-                    equipoApostado = _context.Equipos.FirstOrDefault(e => e.Nombre == partido.NombreVisitante);
-                }
-                Resultado aposte = j.obtenerApostado(h.Resultado);
-                Resultado resultado = partido.obtenerGanador(partido);
-                
-                //Si llegamos se paga por lo apostado
-                if (aposte == resultado)
-                {
-                        j.pagar(h.CantApostado, h.Resultado, equipoApostado, equipoRival);
-                        _context.Jugadores.Update(j);
-                        _context.SaveChanges();
-                }
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
+        
 
     }
 
