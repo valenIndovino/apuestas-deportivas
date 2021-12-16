@@ -26,7 +26,7 @@
                     <input name="password" class="form-control" type="password" />
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Login" class="btn btn-success" />
+                    <input type="submit" value="Login" class="btn btn-success" id="login" />
                     <label style="color:white">No tienes una cuenta creada, puedes crear una...</label>
                     <a asp-action="Create" asp-controller="Jugadores" class="btn btn-success">Registrarse</a>
 </div>
@@ -61,6 +61,28 @@
             font-weight: bold;
         }
     </style>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#login').click(function () {
+           
+            $.ajax({
+                url: "/login/Login",
+                method: "post",
+                success: function (response) {
+                    //$('#render').append(response);
+                    //alert('llego');
+                    //console.log(response);
+                    alert("Bienvenido ")
+                }
+            });
+        });
+
+    });
+
+</script>
 
 
 

@@ -41,6 +41,7 @@ namespace Apuestas.Controllers
                 
                 var usuario = RNUsuarios.ObtenerUsuario(_context, username, password);
 
+                ObtenerLogueado(username);
 
                 if (usuario != null)
                 {
@@ -81,7 +82,6 @@ namespace Apuestas.Controllers
 
                         TempData["LoggedIn"] = true;
 
-
                         return RedirectToAction(nameof(HomeController.Index), "Home");
 
                     }
@@ -112,7 +112,11 @@ namespace Apuestas.Controllers
             return View();
         }
 
-
+        [HttpGet]
+        public String ObtenerLogueado(String nombre)
+        {
+            return nombre;
+        }
 
 
 

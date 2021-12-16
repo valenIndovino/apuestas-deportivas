@@ -182,7 +182,7 @@ namespace Apuestas.Controllers
             var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
             int idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             Jugador j = await _context.Jugadores.FindAsync(idUsuario);
-
+        
 
             foreach (Historial h in _context.Historials)
             {
@@ -190,7 +190,6 @@ namespace Apuestas.Controllers
                 {
                     if (h.Pagado == "NO")
                     {
-
                         Partido partido = await _context.Partidos.FindAsync(h.Partido);
                         DateTime fechaPartido = partido.Fecha;
                         DateTime fechaActual = DateTime.Now;
@@ -237,5 +236,33 @@ namespace Apuestas.Controllers
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
-    }
+
+        [HttpGet]
+        public async Task<int> Apostados()
+        {
+            var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+            int idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            int i = 0;
+            foreach (Historial h in _context.Historials)
+            {
+                if (idUsuario == h.Jugador)
+                {
+                    if (h.Pagado == "NO")
+                    {
+                        i++;
+                    } else if(i > 0)
+                    {
+                        i--;
+                    }
+                    else
+                    {
+                        i = 0;
+                    }
+                }
+            }
+
+            return i;
+
+            }
+        }
 }

@@ -11,47 +11,41 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Apuestas</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Apuestas</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link active" aria-current="page"  asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                            <a class="nav-link"  asp-controller="Login" asp-action="Logout">Logout</a>
                         </li>
-                        <li class="nav-item">
-                            <p class="nav-link text-dark">Saldo: </p>  <p class="nav-link text-dark" id="saldo"></p>
-                        </li>
-                            
+                        
                     </ul>
-
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            <button type="button" id="btnSaldo" name="btnSaldo" class="btn btn-outline-success">
-                Mostrar Saldo
-            </button>
-            <form method="post" asp-action="RecorrerLista">
-                <button asp-action="RecorrerLista" asp-controller="Historiales" type="submit" class="btn btn-outline-success" style="display: inline">Intentar Cobrar</button>
-            </form>
+           
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Apuestas - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+        <button type="button" id="btnSaldo" name="btnSaldo" class="btn btn-outline-success">
+            Mostrar Saldo
+        </button>
+        <form method="post" asp-action="RecorrerLista">
+            <button asp-action="RecorrerLista" asp-controller="Historiales" type="submit" class="btn btn-outline-success" id="cobrar">Intentar Cobrar</button>
+        </form>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -61,12 +55,13 @@
     <style>
         body {
             background-image: url(https://images.alphacoders.com/923/923986.jpg);
-            
         }
 
         h1 {
             color: white;
         }
+
+       
     </style>
 
     <script>
@@ -77,17 +72,36 @@
 
                 $.ajax({
                     url: "/jugadores/MostrarSaldo",
-                    method : "get",
+                    method: "get",
                     success: function (response) {
                         //$('#render').append(response);
                         //alert('llego');
                         //console.log(response);
-                        $("#saldo").html(response);
+                        alert("Tu saldo es de: $" + response)
                     }
                 });
             });
 
         });
+
+        $(document).ready(function () {
+
+            $('#cobrar').click(function () {
+            
+                $.ajax({
+                    url: "/historiales/Apostados",
+                    method: "get",
+                    success: function (response) {
+                        //$('#render').append(response);
+                        //alert('llego');
+                        //console.log(response);
+                        alert("Partidos apostados: " + response)
+                    }
+                });
+            });
+
+        });
+
     </script>
 </body>
 </html>
